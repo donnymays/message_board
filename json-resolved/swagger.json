@@ -1,0 +1,164 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Message Board Practice",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "/"
+  } ],
+  "tags" : [ {
+    "name" : "Message",
+    "description" : "Messages for the Message Board Practice"
+  } ],
+  "paths" : {
+    "/message/{messageId}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "messageId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 13
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Group of messages",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Message"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This is an unexpected error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/message" : {
+      "get" : {
+        "responses" : {
+          "200" : {
+            "description" : "Group of messages",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Message"
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This is an unexpected error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "description" : "Add a message to the group",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Message"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "The message has been created"
+          },
+          "500" : {
+            "description" : "This is an unexpected error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_500"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Message" : {
+        "required" : [ "content", "createdDate", "id", "tagline", "user" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "example" : 13
+          },
+          "createdDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "tagline" : {
+            "type" : "string",
+            "example" : "Robots - Vassup? or Ish Don't Think So?"
+          },
+          "content" : {
+            "type" : "string",
+            "example" : "Robots are totally Vassup? because they have superminds"
+          },
+          "user" : {
+            "type" : "string",
+            "example" : "RobotLuvr83"
+          }
+        }
+      },
+      "inline_response_500" : {
+        "type" : "object",
+        "properties" : {
+          "statusCode" : {
+            "type" : "string",
+            "example" : "500"
+          },
+          "message" : {
+            "type" : "string",
+            "example" : "this is an error"
+          }
+        }
+      }
+    },
+    "responses" : {
+      "500ApiError" : {
+        "description" : "This is an unexpected error",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/inline_response_500"
+            }
+          }
+        }
+      }
+    }
+  }
+}
